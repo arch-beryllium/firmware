@@ -10,4 +10,4 @@ Install https://github.com/andersson/pil-squasher and `simg2img`, then:
 ./build.sh
 ```
 
-The result will be named `firmware-xxxxxxxx.tar.gz`.
+The result will be `firmware.tar.gz`.
