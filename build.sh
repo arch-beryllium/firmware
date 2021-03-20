@@ -55,4 +55,13 @@ wget https://github.com/kvalo/ath10k-firmware/raw/master/WCN3990/hw1.0/board-2.b
 rm firmware*.tar.gz -rf
 # Force time so we always get the same hash for the archive
 tar -czf firmware.tar.gz build --mtime='1970-01-01'
-mv firmware.tar.gz "firmware-$(sha256sum firmware.tar.gz | cut -c1-8)".tar.gz
+
+hash="$(sha256sum firmware.tar.gz | cut -c1-8)"
+latest="$(curl --silent "https://api.github.com/repos/arch-beryllium/firmware/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')"
+
+if [ "$latest" != "$hash" ]; then
+  echo "Creating a new release"
+  gh release create "$hash" firmware.tar.gz -t "$hash" -n ""
+else
+  echo "Latest firmware already released"
+fi
