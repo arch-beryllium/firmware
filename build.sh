@@ -56,7 +56,7 @@ rm firmware*.tar.gz -rf
 # Force time so we always get the same hash for the archive
 tar -czf firmware.tar.gz build --mtime='1970-01-01'
 
-hash="$(sha256sum firmware.tar.gz | cut -c1-8)"
+hash="$(sha256sum firmware.tar.gz | cut -d " " -f 1)"
 latest="$(curl --silent "https://api.github.com/repos/arch-beryllium/firmware/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')"
 
 if [ "$latest" != "$hash" ]; then
