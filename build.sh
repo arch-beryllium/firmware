@@ -50,7 +50,32 @@ pil-squasher $dir/qcom/sdm845/beryllium/cdsp.mbn rom/modem/image/cdsp.mdt
 pil-squasher $dir/qcom/sdm845/beryllium/modem.mbn rom/modem/image/modem.mdt
 
 wget https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/ath10k/WCN3990/hw1.0/firmware-5.bin -O $dir/ath10k/WCN3990/hw1.0/firmware-5.bin
-wget https://github.com/kvalo/ath10k-firmware/raw/master/WCN3990/hw1.0/board-2.bin -O $dir/ath10k/WCN3990/hw1.0/board-2.bin
+
+JSON=$(mktemp)
+
+iter=0
+echo "[" >"${JSON}"
+for file in rom/modem/image/bdwlan.*; do
+  [[ $file == *.txt ]] && continue
+
+  iter=$((iter + 1))
+  [ $iter -ne 1 ] && echo "  }," >>"${JSON}"
+
+  echo "  {" >>"${JSON}"
+  echo "          \"data\": \"$file\"," >>"${JSON}"
+  if [[ $file == */bdwlan.bin ]]; then
+    file_ext="ff"
+  else
+    file_ext="$(printf '%x\n' "$(basename "${file}" | sed -E 's:^.*\.b?([0-9a-f]*)$:0x\1:')")"
+  fi
+  echo "          \"names\": [\"bus=snoc,qmi-board-id=${file_ext}\"]" >>"${JSON}"
+done
+
+echo "  }" >>"${JSON}"
+echo "]" >>"${JSON}"
+
+python2 qca-swiss-army-knife/tools/scripts/ath10k/ath10k-bdencoder -c "${JSON}" -o $dir/ath10k/WCN3990/hw1.0/board-2.bin
+rm -rf "$JSON"
 
 rm firmware*.tar.gz -rf
 # Force time so we always get the same hash for the archive
