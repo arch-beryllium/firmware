@@ -41,7 +41,7 @@ mkdir -p $dir/ath10k/WCN3990/hw1.0 $dir/qcom/sdm845/beryllium
 cp rom/modem/image/{adspr,adspua,cdspr,modemr,modemuw}.jsn $dir/qcom/sdm845/beryllium
 cp rom/modem/image/{mba,wlanmdsp}.mbn $dir/qcom/sdm845/beryllium
 cp rom/vendor/firmware/tas2559_uCDSP.bin $dir
-pil-squasher $dir/ipa_fws.mbn rom/vendor/firmware/ipa_fws.mdt
+cp rom/vendor/firmware/ipa_fws* $dir
 pil-squasher $dir/qcom/sdm845/beryllium/a630_zap.mbn rom/vendor/firmware/a630_zap.mdt
 pil-squasher $dir/qcom/sdm845/beryllium/adsp.mbn rom/modem/image/adsp.mdt
 pil-squasher $dir/qcom/sdm845/beryllium/cdsp.mbn rom/modem/image/cdsp.mdt
