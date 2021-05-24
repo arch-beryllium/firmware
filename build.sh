@@ -20,7 +20,7 @@ if [ ! -f "$file" ]; then
 fi
 
 function cleanup() {
-  umount rom/{bluetooth,modem,dsp,vendor} || true
+  umount rom/{modem,vendor} || true
 }
 trap cleanup EXIT
 
@@ -30,7 +30,7 @@ if file rom/images/vendor.img | grep -q "sparse"; then
   rm /tmp/vendor.img
 fi
 
-for image in "bluetooth" "modem" "dsp" "vendor"; do
+for image in "modem" "vendor"; do
   mkdir -p rom/$image
   mount -o loop rom/images/$image.img rom/$image
 done
