@@ -37,19 +37,15 @@ done
 
 dir="build/lib/firmware"
 rm -rf build
-mkdir -p $dir/ath10k/WCN3990/hw1.0 $dir/qca $dir/qcom/sdm845/beryllium
-cp rom/bluetooth/image/{crbtfw21.tlv,crnv21.bin} $dir/qca
+mkdir -p $dir/ath10k/WCN3990/hw1.0 $dir/qcom/sdm845/beryllium
 cp rom/modem/image/{adspr,adspua,cdspr,modemr,modemuw}.jsn $dir/qcom/sdm845/beryllium
 cp rom/modem/image/{mba,wlanmdsp}.mbn $dir/qcom/sdm845/beryllium
-cp rom/vendor/firmware/a630_{gmu.bin,sqe.fw} $dir/qcom
 cp rom/vendor/firmware/tas2559_uCDSP.bin $dir
 pil-squasher $dir/ipa_fws.mbn rom/vendor/firmware/ipa_fws.mdt
 pil-squasher $dir/qcom/sdm845/beryllium/a630_zap.mbn rom/vendor/firmware/a630_zap.mdt
 pil-squasher $dir/qcom/sdm845/beryllium/adsp.mbn rom/modem/image/adsp.mdt
 pil-squasher $dir/qcom/sdm845/beryllium/cdsp.mbn rom/modem/image/cdsp.mdt
 pil-squasher $dir/qcom/sdm845/beryllium/modem.mbn rom/modem/image/modem.mdt
-
-wget https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/ath10k/WCN3990/hw1.0/firmware-5.bin -O $dir/ath10k/WCN3990/hw1.0/firmware-5.bin
 
 JSON=$(mktemp)
 
